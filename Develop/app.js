@@ -10,6 +10,49 @@ const outputPath = path.join(OUTPUT_DIR, "team.html");
 
 const render = require("./lib/htmlRenderer");
 
+inquirer
+  .prompt([
+    {
+        type: 'input',
+        message: 'What is their name?',
+        name: 'name'
+    },
+    {
+        type: 'input',
+        message: 'What is their id?',
+        name: 'id'
+    },
+    {
+        type: 'input',
+        message: 'What is their email?',
+        name: 'email'
+    },
+    {
+        type: 'input',
+        message: 'What is their office number?',
+        name: 'officeNumber'
+    },
+    {
+        type: 'input',
+        message: 'What is their Github username?',
+        name: 'Github'
+    },
+    {
+        type: 'input',
+        message: 'What is their school?',
+        name: 'school'
+    }
+  ])
+  .then(answers => {
+    // Use user feedback for... whatever!!
+  })
+  .catch(error => {
+    if(error.isTtyError) {
+      // Prompt couldn't be rendered in the current environment
+    } else {
+      // Something else when wrong
+    }
+  });
 
 // Write code to use inquirer to gather information about the development team members,
 // and to create objects for each team member (using the correct classes as blueprints!)
