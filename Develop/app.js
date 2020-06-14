@@ -9,51 +9,68 @@ const OUTPUT_DIR = path.resolve(__dirname, "output");
 const outputPath = path.join(OUTPUT_DIR, "team.html");
 
 const render = require("./lib/htmlRenderer");
+const Choice = require("inquirer/lib/objects/choice");
+const Choices = require("inquirer/lib/objects/choices");
+const employees = [];
+const questions = [
+  {
+    type: 'list',
+    message: 'What is their role?',
+    name: 'role',
+    choices: ['Manager', 'Engineer', 'Intern']
+  },
+  {
+      type: 'input',
+      message: 'What is their name?',
+      name: 'name'
+  },
+  {
+      type: 'input',
+      message: 'What is their id?',
+      name: 'id'
+  },
+  {
+      type: 'input',
+      message: 'What is their email?',
+      name: 'email'
+  },
+  {
+      type: 'input',
+      message: 'What is their office number?',
+      name: 'officeNumber',
+      when: (answers) => answers.role === 'Manager'
+  },
+  {
+      type: 'input',
+      message: 'What is their Github username?',
+      name: 'Github',
+      when: (answers) => answers.role === 'Engineer'
+  },
+  {
+      type: 'input',
+      message: 'What is their school?',
+      name: 'school',
+      when: (answers) => answers.role === 'Intern'
+  },
+  {
+    type: 'confirm',
+    message: 'Would you like to add another employee?',
+    name: "newEmployee",
+    default: true
+  }
+];
 
-inquirer
-  .prompt([
-    {
-        type: 'input',
-        message: 'What is their name?',
-        name: 'name'
-    },
-    {
-        type: 'input',
-        message: 'What is their id?',
-        name: 'id'
-    },
-    {
-        type: 'input',
-        message: 'What is their email?',
-        name: 'email'
-    },
-    {
-        type: 'input',
-        message: 'What is their office number?',
-        name: 'officeNumber'
-    },
-    {
-        type: 'input',
-        message: 'What is their Github username?',
-        name: 'Github'
-    },
-    {
-        type: 'input',
-        message: 'What is their school?',
-        name: 'school'
-    }
-  ])
-  .then(answers => {
-    // Use user feedback for... whatever!!
-  })
-  .catch(error => {
-    if(error.isTtyError) {
-      // Prompt couldn't be rendered in the current environment
-    } else {
-      // Something else when wrong
+function teamBuilder() {
+inquirer.prompt(questions).then(answers => {
+    employees.push(answers);
+    console.log(employees);
+    if (answers.newEmployee){
+      teamBuilder();
     }
   });
-
+}
+teamBuilder();
+render(employees);
 // Write code to use inquirer to gather information about the development team members,
 // and to create objects for each team member (using the correct classes as blueprints!)
 
