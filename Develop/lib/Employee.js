@@ -5,10 +5,19 @@ module.exports = class Employee {
         this.name = answers.name;
         this.id = answers.id;
         this.email = answers.email;
+        this.role = answers.role;
     }
-    getName(){}
-    getId(){}
-    getEmail(){}
-    getRole(){}
+    getName(){
+        return this.name;
+    }
+    getId(){
+        return this.id;
+    }
+    getEmail(){
+        return this.email;
+    }
+    getRole(){
+        return this.role;
+    }
 }
 
