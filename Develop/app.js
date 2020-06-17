@@ -63,7 +63,6 @@ const questions = [
 function teamBuilder() {
 inquirer.prompt(questions).then(answers => {
     employees.push(answers);
-    console.log(employees);
     if (answers.newEmployee){
       teamBuilder();
     }
