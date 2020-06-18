@@ -20,37 +20,37 @@ const questions = [
     choices: ['Manager', 'Engineer', 'Intern']
   },
   {
-      type: 'input',
-      message: 'What is their name?',
-      name: 'name'
+    type: 'input',
+    message: 'What is their name?',
+    name: 'name'
   },
   {
-      type: 'input',
-      message: 'What is their id?',
-      name: 'id'
+    type: 'input',
+    message: 'What is their id?',
+    name: 'id'
   },
   {
-      type: 'input',
-      message: 'What is their email?',
-      name: 'email'
+    type: 'input',
+    message: 'What is their email?',
+    name: 'email'
   },
   {
-      type: 'input',
-      message: 'What is their office number?',
-      name: 'officeNumber',
-      when: (answers) => answers.role === 'Manager'
+    type: 'input',
+    message: 'What is their office number?',
+    name: 'officeNumber',
+    when: (answers) => answers.role === 'Manager'
   },
   {
-      type: 'input',
-      message: 'What is their Github username?',
-      name: 'Github',
-      when: (answers) => answers.role === 'Engineer'
+    type: 'input',
+    message: 'What is their Github username?',
+    name: 'github',
+    when: (answers) => answers.role === 'Engineer'
   },
   {
-      type: 'input',
-      message: 'What is their school?',
-      name: 'school',
-      when: (answers) => answers.role === 'Intern'
+    type: 'input',
+    message: 'What is their school?',
+    name: 'school',
+    when: (answers) => answers.role === 'Intern'
   },
   {
     type: 'confirm',
@@ -61,15 +61,34 @@ const questions = [
 ];
 
 function teamBuilder() {
-inquirer.prompt(questions).then(answers => {
-    employees.push(answers);
-    if (answers.newEmployee){
+  inquirer.prompt(questions).then(answers => {
+
+    if (answers.role === "Intern") {
+      const { name, id, email, school } = answers;
+      employee = new Intern(name, id, email, school);
+    } else if (answers.role === "Manager") {
+      const { name, id, email, officeNumber } = answers;
+      employee = new Manager(name, id, email, officeNumber);
+    } else if (answers.role === "Engineer") {
+      const { name, id, email, github } = answers;
+      employee = new Engineer(name, id, email, github);
+    }
+
+    employees.push(employee);
+
+    if (answers.newEmployee) {
       teamBuilder();
+    } else {
+      fs.writeFile(outputPath, render(employees), function (err) {
+        if (err) throw err;
+        console.log('Your team page is made!');
+      });
+
     }
   });
 }
 teamBuilder();
-render(employees);
+
 // Write code to use inquirer to gather information about the development team members,
 // and to create objects for each team member (using the correct classes as blueprints!)
 
